@@ -1,83 +1,47 @@
-# 🚀 Startup Idea Validator
-
-A **Claude Skill** that turns a raw business idea into a polished, investor-style validation report — complete with a scored rubric, SWOT analysis, market sizing, financial modeling, and a phased go-to-market plan.
-
-> Built for [Claude](https://claude.ai) / [Claude Code](https://claude.com/claude-code). Drop it into your skills folder and Claude will interview you about your idea, research the market, and generate a professional PDF report.
-
----
-
-## ✨ What It Does
-
-Give Claude a business idea, and this skill will:
-
-1. **Interview you** — guided questions to extract the idea, target market, pricing, and costs
-2. **Research** — pulls in market size, competitor, and legal/regulatory context
-3. **Score it** — evaluates the idea across weighted rubric categories, visualized as a radar chart
-4. **Model the finances** — gross margin, LTV:CAC ratio, break-even volume, and startup costs
-5. **Generate a report** — a complete, polished PDF ready to share or pitch
-
----
-
-## 📄 Report Contents
-
-Each generated report includes:
-
-| Section | Description |
-|---|---|
-| 🎯 **Overall Score** | Weighted score across rubric categories + radar chart |
-| 🔲 **SWOT Analysis** | Full 2x2 quadrant — Strengths, Weaknesses, Opportunities, Threats |
-| 👤 **Ideal Customer Profiles** | Who the product is really for |
-| 📊 **Market Sizing** | Market stats with an optional TAM / SAM / SOM funnel chart |
-| 💰 **Financial Model** | Startup costs (itemized table + pie chart), gross margin, LTV:CAC, and break-even analysis |
-| ⚖️ **Legal & Regulatory** | Key considerations for the idea's industry/geography |
-| 🏷️ **Brand Names** | AI-suggested naming options |
-| 📈 **Marketing Strategy** | Phased go-to-market plan |
-
----
-
-## 📂 Structure
-
+Startup Idea Validator — Claude Skill
+A Claude Skill that turns a rough business idea into a full validation report: an interview, real web research, a weighted score across 7 categories, and a polished PDF with a radar chart, full SWOT, ideal customer profiles, market sizing, competitor analysis, and a financial model (startup costs, unit economics, break-even).
+![Score radar chart and SWOT quadrant](readme_assets/preview-radar-swot.png)
+![Financial model: startup costs, unit economics, break-even](readme_assets/preview-financials.png)
+What it does
+Describe a business idea to Claude (with this skill enabled) and it will:
+Ask clarifying questions about the idea, target customer, pricing, and market
+Research the market, competitors, and legal/regulatory landscape with web search
+Score the idea across 7 weighted categories (problem-solution fit, market size, differentiation, business model, execution feasibility, legal risk, go-to-market)
+Generate a PDF report with:
+Overall score + at-a-glance radar chart
+Full SWOT (strengths, weaknesses, opportunities, threats)
+Ideal customer profiles
+Market size (TAM/SAM/SOM) with an optional funnel chart
+Competitive landscape
+Financial model — startup costs (with pie chart), unit economics (gross margin, LTV:CAC), break-even analysis
+Legal considerations, brand name ideas, phased marketing strategy, and a final verdict
+Requirements
+A Claude account (Free, Pro, Max, Team, or Enterprise all support Skills)
+Code execution and file creation enabled in your Claude settings (this skill runs a Python script to build the PDF)
+How to install
+Download `startup-idea-validator.zip` from this repo (or from the Releases page if you've published one)
+In Claude, go to Settings → Capabilities (or Customize, depending on your plan) → Skills
+Click Upload skill and select the downloaded zip — don't unzip it first, upload it as-is
+Toggle the skill on
+Start a new chat and describe a business idea, e.g. "I want to validate an idea for a subscription meal-prep service for students" — Claude will invoke the skill automatically
+No need to say "use the skill" explicitly — Claude picks it up from the description of what you're asking for.
+Repo structure
 ```
 startup-idea-validator/
-├── SKILL.md                     # Skill definition & trigger conditions
+├── SKILL.md                       # Core instructions Claude follows
 ├── references/
-│   ├── scoring_rubric.md        # Weighted scoring categories & criteria
-│   └── interview_guide.md       # Question flow for extracting idea details
+│   ├── scoring_rubric.md          # Defines the 7 scoring categories
+│   ├── interview_guide.md         # What to ask the user before scoring
+│   └── report_schema.md           # Full JSON schema for the report data
 └── scripts/
-    ├── generate_report.py       # Builds the PDF report from structured input
-    └── sample_input.json        # Example input covering every field
+    ├── generate_report.py         # Builds the PDF (charts, tables, layout)
+    └── sample_input.json          # Example input covering every field
 ```
-
----
-
-## ⚙️ How It Works
-
-1. Claude interviews you (or ingests a filled-out brief) and assembles a structured JSON object describing the idea, market, and finances.
-2. `generate_report.py` consumes that JSON and computes the derived metrics:
-   - **Gross margin %** = `(price_per_unit − cost_per_unit) / price_per_unit`
-   - **LTV:CAC ratio** = `ltv / cac`
-   - **Break-even volume/month** = `monthly_fixed_costs / contribution_margin_per_unit`
-3. The script renders everything — score bars, radar chart, SWOT grid, funnel chart, cost pie chart — into a single polished PDF.
-
-See `scripts/sample_input.json` for a complete example of the expected input shape.
-
----
-
-## 🛠️ Installation
-
-1. Clone or download this repository.
-2. Package it as a `.skill` (zip the `startup-idea-validator/` folder) or place the folder directly in your Claude Skills directory.
-3. Upload/enable it in Claude — it will trigger automatically when you ask Claude to validate, score, or write a business plan for a startup idea.
-
----
-
-## 🧩 Requirements
-
-- Python 3 (for `generate_report.py`)
-- A Claude environment with code execution / file creation enabled (Claude.ai or Claude Code)
-
----
-
-## 📜 License
-
-MIT — free to use, modify, and share.
+`startup-idea-validator.zip` is this same folder pre-packaged for upload — that's the file to download if you just want to use the skill. The unzipped files above are here so anyone can read, fork, or modify the skill's instructions and code directly on GitHub.
+Customizing
+Edit `SKILL.md` to change the workflow, tone, or scoring approach.
+Edit `scripts/generate_report.py` to change the PDF's layout, charts, or add new sections.
+Edit `references/scoring_rubric.md` to change what each of the 7 categories rewards.
+After editing, re-zip the `startup-idea-validator` folder itself (not its contents) to re-package it for upload. The zip must contain the folder as its root — see Claude's skill packaging docs if you hit an upload error.
+License
+Add a license of your choice here (MIT is a common default for a project like this) if you want to make reuse terms explicit.
